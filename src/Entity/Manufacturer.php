@@ -6,11 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table(name="ec_category", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_name", columns={"name"})})
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- * @UniqueEntity(fields={"name"}, message="Category name already exist")
+ * @ORM\Table(name="ec_manufacturer", uniqueConstraints={@ORM\UniqueConstraint(name="uniq_name", columns={"name"})})
+ * @ORM\Entity(repositoryClass="App\Repository\ManufacturerRepository")
+ * @UniqueEntity(fields={"name"}, message="Manufacturer name already exist")
  */
-class Category
+class Manufacturer
 {
     /**
      * @ORM\Id()
@@ -25,7 +25,10 @@ class Category
      */
     private $name;
 
-    public function getId()
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -40,7 +43,7 @@ class Category
 
     /**
      * @param string $name
-     * @return Category
+     * @return Manufacturer
      */
     public function setName(string $name): self
     {

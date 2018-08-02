@@ -17,7 +17,7 @@ class SubCategory
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=150, nullable=false)
      */
     private $name;
 

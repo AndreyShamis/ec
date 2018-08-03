@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -31,6 +33,16 @@ class Package
      * @ORM\Column(type="smallint", options={"default"="2"})
      */
     private $pins = 2;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Component", mappedBy="package")
+     */
+    private $components;
+
+    public function __construct()
+    {
+        $this->components = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -84,5 +96,36 @@ class Package
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection|Component[]
+     */
+    public function getComponents(): Collection
+    {
+        return $this->components;
+    }
+
+    public function addComponent(Component $component): self
+    {
+        if (!$this->components->contains($component)) {
+            $this->components[] = $component;
+            $component->setPackage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComponent(Component $component): self
+    {
+        if ($this->components->contains($component)) {
+            $this->components->removeElement($component);
+            // set the owning side to null (unless already changed)
+            if ($component->getPackage() === $this) {
+                $component->setPackage(null);
+            }
+        }
+
+        return $this;
     }
 }
